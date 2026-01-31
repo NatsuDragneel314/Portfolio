@@ -1,7 +1,7 @@
 // Sky.jsx
 import React from 'react'
 import { useGLTF } from '@react-three/drei'
-import skyModel from '../assets/3d/sky.glb'
+import skyModel from '/assets/3d/sky.glb'
 
 const Sky = () => {
   const { scene } = useGLTF(skyModel)

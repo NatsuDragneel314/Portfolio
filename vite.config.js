@@ -6,4 +6,5 @@ export default defineConfig({
   plugins: [react()],
   assetsInclude: ['**/*.gltf', '**/*.glb'],
   base:process.env.VITE_BASE_PATH || '/Portfolio',
+  base: './',
 })

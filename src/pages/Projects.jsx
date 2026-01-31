@@ -9,10 +9,10 @@ const Projects = () => {
   ];
 
   const cardImages = [
-    "public/assets/images/sign_language.avif",
-    "public/assets/images/music_recommendation.avif",
-    "public/assets/images/sentiment_analysis.avif",
-    "public/assets/images/meal_box.avif"
+    "/assets/images/sign_language.avif",
+    "/assets/images/music_recommendation.avif",
+    "/assets/images/sentiment_analysis.avif",
+    "/assets/images/meal_box.avif"
   ];
 
   const [currentIndex, setCurrentIndex] = useState(0);
