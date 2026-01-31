@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from "./components/Navbar.jsx";
 import { Home, About, Projects } from "./pages/index.js";
-import Canvas3D from "./components/canvas3D.jsx"; 
+import Canvas3D from "./components/Canvas3D.jsx"; 
 import C3D from "./components/C3D.jsx";
 
 const App = () => {
