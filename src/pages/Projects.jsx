@@ -17,7 +17,6 @@ const Projects = () => {
 
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-  const [memberOpacity, setMemberOpacity] = useState(1);
 
   const updateCarousel = (newIndex) => {
     if (isAnimating) return;
@@ -25,11 +24,6 @@ const Projects = () => {
 
     const normalizedIndex = (newIndex + cardImages.length) % cardImages.length;
     setCurrentIndex(normalizedIndex);
-
-    setMemberOpacity(0);
-    setTimeout(() => {
-      setMemberOpacity(1);
-    }, 300);
 
     setTimeout(() => {
       setIsAnimating(false);
@@ -93,9 +87,14 @@ const Projects = () => {
       <h1 className="projects-about-title">PROJECTS</h1>
 
       <div className="projects-carousel-container">
-        <button className="projects-nav-arrow projects-left" onClick={() => updateCarousel(currentIndex - 1)}>
+        <button 
+          className="projects-nav-arrow projects-left" 
+          onClick={() => updateCarousel(currentIndex - 1)}
+          aria-label="Previous project"
+        >
           ‹
         </button>
+        
         <div className="projects-carousel-track">
           {cardImages.map((image, index) => (
             <div
@@ -103,32 +102,41 @@ const Projects = () => {
               className={getCardClass(index)}
               data-index={index}
               onClick={() => updateCarousel(index)}
+              role="button"
+              tabIndex={0}
+              aria-label={`View ${projects[index].name}`}
             >
-              <img src={image} alt={`Project ${index + 1}`} />
+              <img src={image} alt={`${projects[index].name} project preview`} loading="lazy" />
             </div>
           ))}
         </div>
-        <button className="projects-nav-arrow projects-right" onClick={() => updateCarousel(currentIndex + 1)}>
+        
+        <button 
+          className="projects-nav-arrow projects-right" 
+          onClick={() => updateCarousel(currentIndex + 1)}
+          aria-label="Next project"
+        >
           ›
         </button>
       </div>
 
       <div className="projects-member-info">
-        <h2 className="projects-member-name" style={{ opacity: memberOpacity }}>
+        <h2 className="projects-member-name">
           {projects[currentIndex].name}
         </h2>
-        <p className="projects-member-role" style={{ opacity: memberOpacity }}>
+        <p className="projects-member-role">
           {projects[currentIndex].description}
         </p>
       </div>
 
       <div className="projects-dots">
         {cardImages.map((_, index) => (
-          <div
+          <button
             key={index}
             className={`projects-dot ${index === currentIndex ? 'projects-active' : ''}`}
-            data-index={index}
             onClick={() => updateCarousel(index)}
+            aria-label={`Go to project ${index + 1}`}
+            aria-current={index === currentIndex}
           />
         ))}
       </div>
