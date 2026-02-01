@@ -560,7 +560,7 @@ body:has(.card[data-color="green"]:hover) {
 .scroll-hint {
   position: absolute;
   bottom: 2rem;
-  left: 50%;
+  left: 46.5%;
   transform: translateX(-50%);
   z-index: var(--z-base);
   font-size: var(--font-size-sm);
