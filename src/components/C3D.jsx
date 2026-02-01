@@ -1,6 +1,6 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
-import { useRef, useState, Suspense } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import Loader from "./Loader";
 
 
@@ -10,6 +10,13 @@ function HollowKnight() {
   const [hovered, setHovered] = useState(false);
   const [rotation, setRotation] = useState(0);
   const [targetRotation, setTargetRotation] = useState(-1);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useFrame(() => {
     if (ref.current) {
@@ -30,11 +37,13 @@ function HollowKnight() {
     setTargetRotation(targetRotation + Math.PI * 2);
   };
 
+  const scale = isMobile ? 10 : 15;
+
   return (
     <primitive
       ref={ref}
       object={scene}
-      scale={[15, 15, 15]}
+      scale={[scale, scale, scale]}
       position={[0, -3, 0]}
       rotation={[0, -1, 0]}
       onClick={handleClick}
@@ -50,6 +59,17 @@ useGLTF.preload("/assets/3d/hollow_knight.glb");
 
 export default function C3D() {
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    // Detect mobile device
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   return (
     <div 
@@ -58,7 +78,12 @@ export default function C3D() {
     >
       <Canvas
         camera={{ position: [0, 1.5, 70], fov: 20, near: 0.1, far: 500 }}
-        gl={{ alpha: true }}
+        gl={{ 
+          alpha: true,
+          antialias: !isMobile, // Disable antialiasing on mobile for better performance
+          powerPreference: isMobile ? 'low-power' : 'high-performance'
+        }}
+        dpr={isMobile ? [1, 1.5] : [1, 2]} // Lower pixel ratio on mobile
         onCreated={() => setIsLoaded(true)}
       >
         <ambientLight intensity={1.5} />
