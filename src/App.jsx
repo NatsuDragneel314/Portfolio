@@ -44,7 +44,7 @@ const App = () => {
       <div className="fixed inset-0 -z-10 bg-image" />
 
       {/* Scrollable sections */}
-      <main className="scroll-container">
+      <main>
         <section id="home" className={`snap-section fade-section ${activeSection === 'home' ? 'active' : ''}`}>
           <Home />
         </section>
