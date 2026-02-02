@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { BrowserRouter as Router } from 'react-router-dom';
 import Navbar from "./components/Navbar.jsx";
 import { Home, About, Projects } from "./pages/index.js";
@@ -9,17 +9,23 @@ const App = () => {
   const [activeSection, setActiveSection] = useState('home');
 
   useEffect(() => {
+    let timeoutId;
     const observerOptions = {
       root: null,
       threshold: 0.5,
+      rootMargin: '0px'
     };
 
     const observerCallback = (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          setActiveSection(entry.target.id);
-        }
-      });
+      // Debounce state updates to prevent rapid re-renders
+      clearTimeout(timeoutId);
+      timeoutId = setTimeout(() => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveSection(entry.target.id);
+          }
+        });
+      }, 100);
     };
 
     const observer = new IntersectionObserver(observerCallback, observerOptions);
@@ -28,6 +34,7 @@ const App = () => {
     sections.forEach((section) => observer.observe(section));
 
     return () => {
+      clearTimeout(timeoutId);
       sections.forEach((section) => observer.unobserve(section));
     };
   }, []);

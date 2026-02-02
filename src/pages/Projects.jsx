@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-const Projects = () => {
+const Projects = React.memo(() => {
   const projects = [
     { name: "Sign Language", description: "AI-powered sign language recognition system" },
     { name: "Music Recommendation", description: "Personalized music recommendation engine" },
@@ -27,7 +27,7 @@ const Projects = () => {
 
     setTimeout(() => {
       setIsAnimating(false);
-    }, 800);
+    }, 600);
   };
 
   const getCardClass = (index) => {
@@ -72,8 +72,8 @@ const Projects = () => {
     };
 
     document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('touchstart', handleTouchStart);
-    document.addEventListener('touchend', handleTouchEnd);
+    document.addEventListener('touchstart', handleTouchStart, { passive: true });
+    document.addEventListener('touchend', handleTouchEnd, { passive: true });
 
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
@@ -142,6 +142,8 @@ const Projects = () => {
       </div>
     </div>
   );
-};
+});
+
+Projects.displayName = 'Projects';
 
 export default Projects;

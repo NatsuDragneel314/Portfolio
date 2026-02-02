@@ -18,18 +18,18 @@ function HollowKnight() {
     return () => window.removeEventListener('resize', checkMobile);
   }, []);
 
-  useFrame(() => {
-    if (ref.current) {
-      // Smooth rotation animation
-      ref.current.rotation.y += (targetRotation - ref.current.rotation.y) * 0.1;
-      
-      // Gentle bobbing when hovered
-      if (hovered) {
-        ref.current.position.y = -3 + Math.sin(Date.now() * 0.002) * 0.2;
-      } else {
-        ref.current.position.y += (-3 - ref.current.position.y) * 0.1;
-      }
+  useFrame((state, delta) => {
+    if (!ref.current) return;
+    
+    // Smooth rotation animation - only update if difference is significant
+    const rotDiff = targetRotation - ref.current.rotation.y;
+    if (Math.abs(rotDiff) > 0.001) {
+      ref.current.rotation.y += rotDiff * 0.1;
     }
+    
+    // Gentle bobbing when hovered
+    const targetY = hovered ? -3 + Math.sin(state.clock.elapsedTime * 2) * 0.2 : -3;
+    ref.current.position.y += (targetY - ref.current.position.y) * 0.1;
   });
 
   const handleClick = () => {
@@ -80,10 +80,12 @@ export default function C3D() {
         camera={{ position: [0, 1.5, 70], fov: 20, near: 0.1, far: 500 }}
         gl={{ 
           alpha: true,
-          antialias: !isMobile, // Disable antialiasing on mobile for better performance
-          powerPreference: isMobile ? 'low-power' : 'high-performance'
+          antialias: !isMobile,
+          powerPreference: 'high-performance',
+          stencil: false,
+          depth: true
         }}
-        dpr={isMobile ? [1, 1.5] : [1, 2]} // Lower pixel ratio on mobile
+        dpr={isMobile ? 1 : 1.5}
         onCreated={() => setIsLoaded(true)}
       >
         <ambientLight intensity={1.5} />

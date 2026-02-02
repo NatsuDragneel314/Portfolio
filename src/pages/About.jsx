@@ -1,6 +1,6 @@
 import React from 'react'
 
-const About = () => {
+const About = React.memo(() => {
   const skills = [
     { icon: '/assets/icons/html.svg', name: 'HTML' },
     { icon: '/assets/icons/css.svg', name: 'CSS' },
@@ -68,6 +68,8 @@ const About = () => {
       </div>
     </section>
   )
-}
+});
+
+About.displayName = 'About';
 
 export default About

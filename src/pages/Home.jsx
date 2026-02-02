@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Home = () => {
+const Home = React.memo(() => {
   return (
     <section className='hero text-white relative' aria-label="Hero section">
       <div className='hero-text'>
@@ -14,6 +14,8 @@ const Home = () => {
       </div>
     </section>
   )
-}
+});
+
+Home.displayName = 'Home';
 
 export default Home
